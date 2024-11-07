@@ -409,11 +409,11 @@ def sidebar_content():
                 logout()
 
 # 봇 응답 처리 함수 수정
-def handle_bot_response(message):
+def handle_bot_response(message, username):
     if not bot_manager:
         return None
     try:
-        return bot_manager.process_message(message)
+        return bot_manager.process_message(message, username)
     except Exception as e:
         st.error(f"봇 응답 처리 실패: {str(e)}")
         return None
@@ -518,13 +518,18 @@ def main():
             }
             if 'messages' not in st.session_state:
                 st.session_state.messages = []
-            st.session_state.messages.append(user_message)
             
-            # 봇 응답 처리
+            # 봇 응답 처리 (욕설/비난 감지)
             if bot_manager:
-                bot_response = handle_bot_response(message)
+                bot_response = handle_bot_response(message, st.session_state.username)
                 if bot_response:
                     st.session_state.messages.append(bot_response)
+                else:
+                    # 문제없는 메시지만 추가
+                    st.session_state.messages.append(user_message)
+            else:
+                st.session_state.messages.append(user_message)
+            
             st.rerun()
 
 if __name__ == "__main__":
