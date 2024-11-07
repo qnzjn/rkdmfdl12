@@ -1,2 +1,5 @@
-streamlit>=1.24.0
+streamlit
+python-dotenv
+google-generativeai
+Pillow
 streamlit-chat>=0.0.2.2

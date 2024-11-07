@@ -9,24 +9,27 @@ import shutil
 import time
 
 # 채팅봇 관련 임포트 수정
-from dotenv import load_dotenv
-load_dotenv()
+try:
+    from dotenv import load_dotenv
+    load_dotenv()
+except ImportError:
+    pass
 
 # chatbot 임포트를 위한 경로 설정
-sys.path.insert(0, os.path.abspath(os.path.dirname(__file__)))
+current_dir = os.path.dirname(os.path.abspath(__file__))
+if current_dir not in sys.path:
+    sys.path.append(current_dir)
 
 # 나머지 임포트
-from notifications.notification_manager import show_notification, show_exit_notification
-from components.room_manager_ui import RoomManagerUI
-from admin.admin_manager import AdminManager
-from components.chat_room_ui import ChatRoomUI
-
-# 채팅봇 임포트 시도
 try:
+    from notifications.notification_manager import show_notification, show_exit_notification
+    from components.room_manager_ui import RoomManagerUI
+    from admin.admin_manager import AdminManager
+    from components.chat_room_ui import ChatRoomUI
     from chatbot.bot_manager import BotManager
     CHATBOT_ENABLED = True
 except ImportError as e:
-    print(f"Chatbot import error: {str(e)}")
+    print(f"Import error: {str(e)}")
     CHATBOT_ENABLED = False
 
 # 데이터 폴더 경로 설정
