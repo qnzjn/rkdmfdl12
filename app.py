@@ -46,18 +46,14 @@ PROFILES_FILE = os.path.join(DATA_DIR, "user_profiles.json")
 # 관리자 초기화
 admin_manager = AdminManager()
 
-# 봇 매니저 초기화 함수 수정
+# bot_manager 초기화 함수 수정
 def init_bot_manager():
     if not CHATBOT_ENABLED:
         return None
     try:
-        api_key = os.getenv('GEMINI_API_KEY')
-        if not api_key:
-            st.warning("Gemini API key not found in .env file")
-            return None
         return BotManager()
     except Exception as e:
-        st.error(f"봇 초기화 실패: {str(e)}")
+        print(f"Bot manager initialization error: {str(e)}")
         return None
 
 # 전역 봇 매니저 초기화
